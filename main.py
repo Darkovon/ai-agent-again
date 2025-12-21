@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-from call_function import available_functions
+from call_function import available_functions, call_function
 from prompts import system_prompt
 
 
@@ -44,11 +44,17 @@ def main():
     if not response.function_calls:
         print(response.text)
     else:
-        for i in response.function_calls:
-            print(f"Calling function: {i.name}({i.args})")
+        function_call_results = []
 
-    # if verbose:
-    #     print(f"User prompt: {sys.argv[1]}\nPrompt tokens: {prompt_tokens}\nResponse tokens: {response_tokens}")
+        for function_call in response.function_calls:
+            result = call_function(function_call, verbose=verbose)
+            parts = result.parts
+            if not parts or not parts[0].function_response:
+                raise Exception("Function call result missing function_response")
+            if verbose:
+                print(f"-> {parts[0].function_response.response}")
+
+            function_call_results.append(parts[0])
 
 if __name__ == "__main__":
     main()

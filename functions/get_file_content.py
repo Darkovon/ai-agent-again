@@ -1,6 +1,6 @@
 import os
-from re import L
-from sre_compile import MAXCODE
+
+from google.genai import types
 
 from config import MAX_CHARS
 
@@ -31,3 +31,19 @@ def get_file_content(working_directory, file_path):
 
     except Exception as e:
         return f'Error while reading file: {e}'
+
+
+schema_get_file_content = types.FunctionDeclaration(
+    name="get_file_content",
+    description="Reads the content of a file in a specified directory relative to the working directory, providing file content",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="File path to read from, relative to the working directory",
+            ),
+        },
+        required=["file_path"]
+    ),
+)
