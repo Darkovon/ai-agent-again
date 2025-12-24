@@ -9,9 +9,9 @@ def run_python_file(working_directory, file_path, args=None):
     # Let's make sure the file is real and in the permitted dir.
 
     path_to_working = os.path.abspath(working_directory)
-    print(path_to_working)
+    # print(path_to_working)
     path_to_file = os.path.normpath(os.path.join(path_to_working, file_path))
-    print(path_to_file)
+    # print(path_to_file)
 
     if not os.path.commonpath([path_to_working, path_to_file]) == path_to_working:
         return f'Error: Cannot execute "{file_path}" as it is outside the permitted working directory'
